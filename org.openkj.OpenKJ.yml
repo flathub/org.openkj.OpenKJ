@@ -165,7 +165,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/openkj/openkj.git
-        commit: 20a2daf2b57b5aef0fbfa3ce5358599aa294b011
+        commit: a40375fe5bf935a808270a209b6958aeea947438
 cleanup-commands:
   - "mv /app/lib/liba52*.* /app/lib/codecs/lib/"
   - "mv /app/lib/libass.* /app/lib/codecs/lib/"
