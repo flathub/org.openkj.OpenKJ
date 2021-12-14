@@ -1,6 +1,6 @@
 app-id: org.openkj.OpenKJ
 runtime: org.kde.Platform
-runtime-version: 5.15
+runtime-version: 5.15-21.08
 sdk: org.kde.Sdk
 command: openkj
 finish-args: 
@@ -165,7 +165,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/openkj/openkj.git
-        commit: 6a6ad41ea28a4d9f6e4646aaf4cb9a7c8c59a785
+        commit: 7ea08b5f03ed22864da260e3d3ff8dc5d9264e43
 cleanup-commands:
   - "mv /app/lib/liba52*.* /app/lib/codecs/lib/"
   - "mv /app/lib/libass.* /app/lib/codecs/lib/"
