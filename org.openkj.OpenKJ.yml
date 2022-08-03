@@ -56,18 +56,42 @@ modules:
         commands:
           - "autoreconf -fiv"
         dest-filename: autogen.sh
-  - name: gst-plugins-ugly
+
+  - name: gstreamer
     buildsystem: meson
     config-opts:
-      - "-Dmpeg2dec=enabled"
+      - "--buildtype=release"
+      
+      - "-Ddoc=disabled"
+      - "-Drs=disabled"
+      - "-Dgtk_doc=disabled"
+      - "-Dpython=disabled"
+      - "-Ddevtools=disabled"
+      - "-Dges=disabled"
+      - "-Drtsp_server=disabled"
+      - "-Dgst-examples=disabled"
+      - "-Dqt5=disabled"
+        
+      - "-Dgpl=enabled"
+      - "-Dbad=enabled"
+      - "-Dugly=enabled"
+      - "-Dlibav=enabled"
+
+      - "-Dgst-plugins-ugly:mpeg2dec=enabled"
+      - "-Dgst-plugins-bad:openh264=disabled"
+      - "-Dgst-plugins-bad:vdpau=disabled"
+      - "-Dgst-plugins-bad:vulkan=disabled"
     sources:
       - type: git
-        url: "https://gitlab.freedesktop.org/gstreamer/gst-plugins-ugly.git"
-        tag: 1.16.3
-        commit: f25c41970a54590e9f6fc82406aeda377864f8d8
+        url: "https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
+        tag: 1.19.3
+        disable-submodules: true
+      - type: patch
+        path: patches/gst-libav-stop-caching-codecs.patch
     post-install:
       - "mkdir -p /app/lib/codecs/lib/gstreamer-1.0"
       - "mv /app/lib/gstreamer-1.0/*.so /app/lib/codecs/lib/gstreamer-1.0"
+      
   - name: libass
     config-opts:
       - "--enable-shared"
@@ -96,39 +120,8 @@ modules:
         url: "https://git.ffmpeg.org/ffmpeg.git"
         tag: n4.2.4
         commit: f9f95ceebfbd7b7f43c1b7ad34e25d366e6e2d2b
-  - name: gst-libav
-    buildsystem: meson
-    config-opts:
-      - "-Ddoc=disabled"
-    sources:
-      - type: git
-        url: "https://gitlab.freedesktop.org/gstreamer/gst-libav.git"
-        tag: 1.16.3
-        commit: 6988bdb0482b18b7a9f0c9635217a93d5057a9ff
-      - type: patch
-        path: patches/gst-libav-stop-caching-codecs.patch
-    post-install:
-      - "mkdir -p /app/lib/codecs/lib/gstreamer-1.0"
-      - "mv /app/lib/gstreamer-1.0/*.so /app/lib/codecs/lib/gstreamer-1.0"
-  - name: gst-plugins-bad
-    buildsystem: meson
-    cleanup:
-      - "/bin/*webrtc*"
-      - "/bin/crossfade"
-      - "/bin/tsparser"
-      - "/bin/playout"
-    config-opts:
-      - "-Dopenh264=disabled"
-      - "-Dvdpau=disabled"
-      - "-Dvulkan=disabled"
-    sources:
-      - type: git
-        url: "https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git"
-        tag: 1.16.3
-        commit: ee8144e98b084d75ffabaef0ef3dca2af8d72061
-    post-install:
-      - "mkdir -p /app/lib/codecs/lib/gstreamer-1.0"
-      - "mv /app/lib/gstreamer-1.0/*.so /app/lib/codecs/lib/gstreamer-1.0"
+
+
   - name: rubberband 
     buildsystem: meson
     sources:
