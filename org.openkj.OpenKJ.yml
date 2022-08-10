@@ -84,7 +84,7 @@ modules:
     sources:
       - type: git
         url: "https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
-        tag: 1.19.3
+        tag: 1.20.3
         disable-submodules: true
       - type: patch
         path: patches/gst-libav-stop-caching-codecs.patch
@@ -99,8 +99,7 @@ modules:
     sources:
       - type: git
         url: "https://github.com/libass/libass.git"
-        tag: 0.14.0
-        commit: 73284b676b12b47e17af2ef1b430527299e10c17
+        tag: 0.16.0
       - type: script
         commands:
           - "autoreconf -fiv"
@@ -118,8 +117,7 @@ modules:
     sources:
       - type: git
         url: "https://git.ffmpeg.org/ffmpeg.git"
-        tag: n4.2.4
-        commit: f9f95ceebfbd7b7f43c1b7ad34e25d366e6e2d2b
+        tag: n5.1
 
 
   - name: rubberband 
@@ -127,7 +125,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/breakfastquay/rubberband.git
-        commit: f1acaf85d70dac991c835626fe768fc0a8d3cb52
+        tag: v3.0.0
+
   - name: fmt 
     buildsystem: cmake-ninja
     builddir: yes
@@ -136,7 +135,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/fmtlib/fmt.git
-        commit: 561834650aa77ba37b15f7e5c9d5726be5127df9
+        tag: 8.1.1
+
   - name: spdlog 
     buildsystem: cmake-ninja
     builddir: yes
@@ -146,19 +146,21 @@ modules:
     sources:
       - type: git
         url: https://github.com/gabime/spdlog.git
-        commit: bee3e63e1bae8b4cd5e3ebd69fbf75f68e47996a
+        tag: v1.10.0
+        
   - name: taglib 
     buildsystem: cmake-ninja
     sources:
       - type: git
         url: https://github.com/taglib/taglib.git
-        commit: f58161511050ac6c060d28e75dcd5c5a3af7279c 
+        commit: 4e7f844ea6439a5a90546feba359832b2ce2e2e8
+
   - name: OpenKJ
     buildsystem: cmake-ninja
     sources:
       - type: git
         url: https://github.com/openkj/openkj.git
-        commit: 3725df7b9c08ea34dbc6cf74c7caaf461981c0ff
+        commit: e77239b13280d0c3a20bea4eac96588507e6b821
 cleanup-commands:
   - "mv /app/lib/liba52*.* /app/lib/codecs/lib/"
   - "mv /app/lib/libass.* /app/lib/codecs/lib/"
