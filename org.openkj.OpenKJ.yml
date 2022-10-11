@@ -56,18 +56,42 @@ modules:
         commands:
           - "autoreconf -fiv"
         dest-filename: autogen.sh
-  - name: gst-plugins-ugly
+
+  - name: gstreamer
     buildsystem: meson
     config-opts:
-      - "-Dmpeg2dec=enabled"
+      - "--buildtype=release"
+      
+      - "-Ddoc=disabled"
+      - "-Drs=disabled"
+      - "-Dgtk_doc=disabled"
+      - "-Dpython=disabled"
+      - "-Ddevtools=disabled"
+      - "-Dges=disabled"
+      - "-Drtsp_server=disabled"
+      - "-Dgst-examples=disabled"
+      - "-Dqt5=disabled"
+        
+      - "-Dgpl=enabled"
+      - "-Dbad=enabled"
+      - "-Dugly=enabled"
+      - "-Dlibav=enabled"
+
+      - "-Dgst-plugins-ugly:mpeg2dec=enabled"
+      - "-Dgst-plugins-bad:openh264=disabled"
+      - "-Dgst-plugins-bad:vdpau=disabled"
+      - "-Dgst-plugins-bad:vulkan=disabled"
     sources:
       - type: git
-        url: "https://gitlab.freedesktop.org/gstreamer/gst-plugins-ugly.git"
-        tag: 1.16.3
-        commit: f25c41970a54590e9f6fc82406aeda377864f8d8
+        url: "https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
+        tag: 1.20.3
+        disable-submodules: true
+      - type: patch
+        path: patches/gst-libav-stop-caching-codecs.patch
     post-install:
       - "mkdir -p /app/lib/codecs/lib/gstreamer-1.0"
       - "mv /app/lib/gstreamer-1.0/*.so /app/lib/codecs/lib/gstreamer-1.0"
+      
   - name: libass
     config-opts:
       - "--enable-shared"
@@ -75,8 +99,7 @@ modules:
     sources:
       - type: git
         url: "https://github.com/libass/libass.git"
-        tag: 0.14.0
-        commit: 73284b676b12b47e17af2ef1b430527299e10c17
+        tag: 0.16.0
       - type: script
         commands:
           - "autoreconf -fiv"
@@ -94,47 +117,16 @@ modules:
     sources:
       - type: git
         url: "https://git.ffmpeg.org/ffmpeg.git"
-        tag: n4.2.4
-        commit: f9f95ceebfbd7b7f43c1b7ad34e25d366e6e2d2b
-  - name: gst-libav
-    buildsystem: meson
-    config-opts:
-      - "-Ddoc=disabled"
-    sources:
-      - type: git
-        url: "https://gitlab.freedesktop.org/gstreamer/gst-libav.git"
-        tag: 1.16.3
-        commit: 6988bdb0482b18b7a9f0c9635217a93d5057a9ff
-      - type: patch
-        path: patches/gst-libav-stop-caching-codecs.patch
-    post-install:
-      - "mkdir -p /app/lib/codecs/lib/gstreamer-1.0"
-      - "mv /app/lib/gstreamer-1.0/*.so /app/lib/codecs/lib/gstreamer-1.0"
-  - name: gst-plugins-bad
-    buildsystem: meson
-    cleanup:
-      - "/bin/*webrtc*"
-      - "/bin/crossfade"
-      - "/bin/tsparser"
-      - "/bin/playout"
-    config-opts:
-      - "-Dopenh264=disabled"
-      - "-Dvdpau=disabled"
-      - "-Dvulkan=disabled"
-    sources:
-      - type: git
-        url: "https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git"
-        tag: 1.16.3
-        commit: ee8144e98b084d75ffabaef0ef3dca2af8d72061
-    post-install:
-      - "mkdir -p /app/lib/codecs/lib/gstreamer-1.0"
-      - "mv /app/lib/gstreamer-1.0/*.so /app/lib/codecs/lib/gstreamer-1.0"
+        tag: n5.1
+
+
   - name: rubberband 
     buildsystem: meson
     sources:
       - type: git
         url: https://github.com/breakfastquay/rubberband.git
-        commit: f1acaf85d70dac991c835626fe768fc0a8d3cb52
+        tag: v3.0.0
+
   - name: fmt 
     buildsystem: cmake-ninja
     builddir: yes
@@ -143,7 +135,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/fmtlib/fmt.git
-        commit: 561834650aa77ba37b15f7e5c9d5726be5127df9
+        tag: 8.1.1
+
   - name: spdlog 
     buildsystem: cmake-ninja
     builddir: yes
@@ -153,19 +146,21 @@ modules:
     sources:
       - type: git
         url: https://github.com/gabime/spdlog.git
-        commit: bee3e63e1bae8b4cd5e3ebd69fbf75f68e47996a
+        tag: v1.10.0
+        
   - name: taglib 
     buildsystem: cmake-ninja
     sources:
       - type: git
         url: https://github.com/taglib/taglib.git
-        commit: f58161511050ac6c060d28e75dcd5c5a3af7279c 
+        commit: 4e7f844ea6439a5a90546feba359832b2ce2e2e8
+
   - name: OpenKJ
     buildsystem: cmake-ninja
     sources:
       - type: git
         url: https://github.com/openkj/openkj.git
-        commit: 3725df7b9c08ea34dbc6cf74c7caaf461981c0ff
+        commit: f116291e50f1fa46acf05135e164abd81d013ee0
 cleanup-commands:
   - "mv /app/lib/liba52*.* /app/lib/codecs/lib/"
   - "mv /app/lib/libass.* /app/lib/codecs/lib/"
