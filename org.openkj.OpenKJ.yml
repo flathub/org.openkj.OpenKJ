@@ -3,6 +3,11 @@ runtime: org.kde.Platform
 runtime-version: 5.15-24.08
 sdk: org.kde.Sdk
 command: openkj
+add-extensions:
+  org.freedesktop.Platform.ffmpeg-full:
+    version: '24.08'
+    directory: lib/ffmpeg
+    add-ld-path: .
 finish-args:
   - "--share=ipc"
   - "--socket=x11"
